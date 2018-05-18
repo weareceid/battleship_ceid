@@ -10,7 +10,7 @@ package l;
  * @author user
  */
 public class L {
-
+int i;
     /**
      * @param args the command line arguments
      */
