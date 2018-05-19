@@ -2,15 +2,18 @@ import java.util.*;
 
 public abstract class Ship {
 
-  private Tile startCell;
+  private int startCellx;
+  private int startCelly;
   private char orient;
   private  int size;
 
-  startCell = new Tile(
-      
-  public void placeShip(Tile startCell, char or, Board b, boolean verbose){
+     
+  public void placeShip(int x,int y, char or, Board b, boolean verbose){
   
-    boolean verbose=false;
+    this.startCellx = x; 
+    this.startCelly = y;
+
+    verbose=false;
 
 
    //Giving the orientation for ship's placement
@@ -18,21 +21,21 @@ public abstract class Ship {
     System.out.println("Please Give Orientation: ");
 
     //Case that Orientation is Horizontal
-    if(or =="h") {
+    if(or == 'h') {
       
-        for( int j=startCell; j<(startCell+size); j++){
+        for( int j=startCellx; j<(startCellx + size); j++){
 
-         b[startCell][j] = s; 
+         b[startCelly][j] = "s"; 
 
         }
 
     }
     //Case that Orientation is Vertical
-     else if(or== "v" ){
+     else if(or== 'v' ){
      
-       for(int i=startCell; i<(startCell + size ); j++){
+       for(int i=startCelly; i<(startCelly + size ); i++){
 
-         b[i][startCell] = s ;
+         b[i][startCellx] = "s" ;
        }
      
      }
