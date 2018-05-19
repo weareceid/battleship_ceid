@@ -1,6 +1,7 @@
 For class Tile:
   Variables:
   
+  Type = TileType type (απο τον enum TileType)
   Coordinates = int X, Y
   hidden = boolean tHidden
   
