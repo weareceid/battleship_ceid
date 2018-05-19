@@ -1,0 +1,61 @@
+For class Tile:
+  Variables:
+  
+  Coordinates = int X, Y
+  hidden = boolean tHidden
+  
+  Methods:
+  
+  getter/setter for Variables
+  draw(boolean h) ~> retutn boolean h
+  
+For class Ship:
+  Variables: 
+  
+  Starting Cell = Tile startCell
+  Orientation = char orient
+  Ship Size = int size 
+  
+  Methods:
+  
+  placeShip(Tile startCell, char orient, <++>, boolean verbose) ~> return boolean
+  
+ For class Board:
+  Variables:
+  
+  Board = Tile board[7][7]
+  
+  Methods:
+  
+  drawboards() (static) ~> return void
+  getAdjacentTiles(Tile t) ~> (θα το φτιαξει οποις το εχει αναλαβει)
+  placeAllShips() ~> return void
+  allShipsShunk() ~> return boolean
+  
+ For class Player:
+  Variables:
+  
+  Name = String playerName
+  Number of Shots = int countShots
+  Number of Misses = int countMisses
+  Number of Hits = int countHits
+  Number of Repetitive Hits = int countRep
+  
+  Methods:
+  
+  placeAllShips() ~> (καλει την συναρτηση απο Board)
+  placeShip(Ship s, int x, int y) ~> 
+  fire(Board b, Array aCoord[][]) ~> return void
+  getStats() ~> return String
+  
+ For class Game:
+ Instances:
+ User
+ Bot
+ 
+ Methods:
+ 
+ getInput() ~> return int (use nextInt() )
+ getRand() ~> return int
+ getOrientation() ~> return String
+ randomPlace() ~> return boolean
