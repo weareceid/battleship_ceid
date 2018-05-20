@@ -17,6 +17,7 @@ public class Tile {
     //Coordinates
     private int X;
     private int Y;
+    //Type of tile
     private TileType type;
 
     //Constructor
