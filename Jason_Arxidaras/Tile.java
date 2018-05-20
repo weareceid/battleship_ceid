@@ -51,7 +51,7 @@ public class Tile {
         return type.symbol;
     }
 
-    public void draw(boolean opponent) {       //If opponent's  SHIP tile is to be drawn it draws SEA tile. Everything else it is drawn normally.
+    public void draw(boolean opponent) {       //If opponent's  SHIP tile is to be drawn it draws SEA tile. Everything else is drawn normally.
                 if (opponent == true) {
             boolean hidden = false;
             if (this.getSymbol() == 's') {
