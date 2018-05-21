@@ -1,20 +1,23 @@
 import java.util.*;
 
-public abstract class Ship {
+public  class Ship {
 
   private int startCellx;
   private int startCelly;
   private char orient;
-  private  int size;
+  private  int size=3;
 
+
+  public Ship(){}
+//  Tile startCell;
      
-  public void placeShip(int x,int y, char or, Board b, boolean verbose){
+  public void placeShip( char or, Board b, boolean verbose){
   
-    this.startCellx = x; 
-    this.startCelly = y;
+Tile  startCell = new Tile (2 , 2 , Tile.TileType.SEA);
+    this.startCellx = startCell.getX(); 
+    this.startCelly = startCell.getY();
 
     verbose=false;
-
 
    //Giving the orientation for ship's placement
    
@@ -22,23 +25,22 @@ public abstract class Ship {
 
     //Case that Orientation is Horizontal
     if(or == 'h') {
-      
-        for( int j=startCellx; j<(startCellx + size); j++){
+        for( int j=startCellx; j<(startCellx+size); j++){
+          
+			
+         b.board[startCelly][j].setTileType(Tile.TileType.SHIP);
 
-         b[startCelly][j] = "s"; 
-
+			
         }
 
     }
     //Case that Orientation is Vertical
-     else if(or== 'v' ){
-     
-       for(int i=startCelly; i<(startCelly + size ); i++){
-
-         b[i][startCellx] = "s" ;
+     else if( or== 'v' ) {
+       for(int i=startCelly; i<(startCelly+size); i++){
+           
+         b.board[i][startCellx].setTileType(Tile.TileType.SHIP);
        }
      
      }
   }
-    
 }
