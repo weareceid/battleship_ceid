@@ -7,11 +7,15 @@ public  class Ship {
   private char orient;
   private  int size=3;
 
+
+  public Ship(){}
+//  Tile startCell;
      
-  public void placeShip(int x,int y, char or, Board b, boolean verbose){
+  public void placeShip( char or, Board b, boolean verbose){
   
-    this.startCellx = x; 
-    this.startCelly = y;
+Tile  startCell = new Tile (1 , 2 , Tile.TileType.SEA);
+    this.startCellx = startCell.getX(); 
+    this.startCelly = startCell.getY();
 
     verbose=false;
 
@@ -21,11 +25,10 @@ public  class Ship {
 
     //Case that Orientation is Horizontal
     if(or == 'h') {
-Tile v=new Tile(0,0,Tile.TileType.SHIP);
         for( int j=startCellx; j<size; j++){
           
 			
-         b.board[startCelly][j]=v; 
+         b.board[startCelly][j].setTileType(Tile.TileType.SHIP);
 
 			
         }
@@ -33,13 +36,11 @@ Tile v=new Tile(0,0,Tile.TileType.SHIP);
     }
     //Case that Orientation is Vertical
      else if( or== 'v' ) {
-      Tile v=new Tile(0,0,Tile.TileType.SHIP);
        for(int i=startCelly; i<size; i++){
            
-         b.board[i][startCellx]=v ;
+         b.board[i][startCellx].setTileType(Tile.TileType.SHIP);
        }
      
      }
   }
-    
 }
