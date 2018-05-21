@@ -6,12 +6,12 @@ public class Board{
  boolean hidden;  //usage for player identification
   
   public Board(){//constructor for board
-       for(int i=0; i<10; i++){
-         for(int j=0; j<10; j++){
-			
-          board[i][j].setTileType(Tile.TileType.SEA);
-         }
-       }
+    for(int i=0; i<10; i++){
+            for(int j=0; j<10; j++){
+                Tile v=new Tile(i,j, Tile.TileType.SEA);
+                board[i][j]=v;
+            }
+        }
   }
   
 	   public  void drawboards(){
