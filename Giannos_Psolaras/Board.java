@@ -82,4 +82,19 @@ public class Board{
         Carrier car=new Carrier();
         car.placeShip(c.board[Game.getRandInput()[0]][Game.getRandInput()[1]],Game.getRandOrientation(),c,false);
     }
+        public boolean allShipsSunk() {
+        boolean check=false;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 11; j++) {
+                if (board[i][j].getSymbol() == 's') {
+                     check=false;
+                }
+                else {
+                        check=true;
+                }
+            }
+        }
+         return check;
+    }
+    
 }
