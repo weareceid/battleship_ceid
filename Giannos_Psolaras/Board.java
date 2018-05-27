@@ -53,16 +53,15 @@ public class Board{
 
         }
     }
-    public ArrayList<Tile> getAdjacent(Tile t,Tile pin[][]){  //give argument Tile and return arraylist Tile
-        ArrayList<Tile> check=new ArrayList<>();
-        check.add(pin[t.getY()][t.getX()-1]);
-        check.add(pin[t.getY()+1][t.getX()]);
-        check.add(pin[t.getY()][t.getX()+1]);
-        check.add(pin[t.getY()-1][t.getX()]);
+    public Tile[][] getAdjacent(Tile t) {  //give argument Tile and return arraylist Tile
+       Tile pin[][]=new Tile[2][2];
+        pin[0][0]=board[t.getY()][t.getX() - 1];
+        pin[0][1]=board[t.getY() + 1][t.getX()];
+        pin[1][0]=board[t.getY()][t.getX() + 1];
+        pin[1][1]=board[t.getY() - 1][t.getX()];
 
-        return check;
+        return pin;
     }
-
     public void placeAllShips(Board c){
    int pin[]=new int[2];
 
