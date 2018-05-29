@@ -2,29 +2,21 @@ import java.util.*;
 import java.io.*;
 
 public class Game {
-    public static void main(String args[])throws OverlapTilesException,OversizeException,AdjacentTilesException{
-       // Game.getInput();
-        int pon[]=new int[2];
-        pon=getInput();
-   System.out.print(pon[0]+" "+pon[1]);
-    }
 
-
-   static int[] getInput(){
+		static int[] getInput(){
         int pin[]=new int[2];
         pin[0]=15;
         pin[1]=15;
 
      Scanner read=new Scanner(System.in).useDelimiter("\\D*\\D");   // doesn`t read space
 
-while(pin[0]<0 || pin[0]>9 || pin[1]<0 || pin[1]>9) {
+	 while(pin[0]<0 || pin[0]>9 || pin[1]<0 || pin[1]>9) {
     System.out.println("Give two numbers divided by some space between 0 and 9 :");
     pin[0] = read.nextInt();
     pin[1] = read.nextInt();
-}
+		 }
      return pin;
-    }
-
+ }
     static int []getRandInput(){
         Random rand=new Random();
         int pin[]=new int[2];
@@ -44,7 +36,6 @@ while(pin[0]<0 || pin[0]>9 || pin[1]<0 || pin[1]>9) {
      boolean randomPlace()throws IOException {
         boolean read = true;
 
-        System.out.println("insert Y or N ");
            char c=(char)System.in.read();
             if(c=='Y'){
                 read=true;
@@ -67,4 +58,58 @@ while(pin[0]<0 || pin[0]>9 || pin[1]<0 || pin[1]>9) {
         }
         return s;
     }
+    public static void main(String[] args){
+
+
+            //Scanners
+            Scan scname = new Scan(System.in);
+
+            //Creating Player 
+            String name = scname.nextLine(); //Player gives his own name
+            Player user= new Player(name);
+
+            //Creating Bot
+            Player bot = new Player("bot");
+
+            bot.placeAllShips();
+
+            while(randomPlace()){
+
+                    user.placeAllShips(user.getPlayerBoard());
+                    user.drawboards();
+                    break;
+
+                    }
+
+            int[] coordin = new int[2];
+            coordin=user.getInput();
+
+            Tile tileplaceship = new Tile(coordin[0] , coordin[1] , Tile.TileType.SHIP);
+
+            user.placeShip(tileplaceship, user.getOrientation() , user.getPlayerBoard,false);
+            
+
+            while(!AllShipsSunk()){
+                    coordin = user.getInput();
+                    user.fire(user.getPlayerBoard() , coordin);
+                    
+                    coordin = bot.getRandInput();
+                    bot.fire(bot.getPlayerBoard() , coordin);
+
+                    user.drawboards();
+            
+
+            }
+
+            if(user.countHits==17){
+
+                    System.out.prinln(user.name + " is the WINNER!! " );
+                    user.getStats();
+            }
+            else if (bot.countHits == 17) {
+                    System.out.prinln( "Bot is the WINNER!! " );
+                    bot.getStats();
+            }
+            }
+
 }
