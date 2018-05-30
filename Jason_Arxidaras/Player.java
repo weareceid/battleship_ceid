@@ -16,6 +16,13 @@ public class Player {
         this.countHit = 0;
         this.countRep = 0;
     }
+    
+      //Getters
+    public String getName(){ return name; }
+    public int getCountShots() { return countShots; }
+    public int getCountHit () { return countHit; }
+    public int getCountMiss () { return countHit; }
+    public int getCountRep () { return countRep; }
 
     public void placeAllShips(Board b) throws OverlapTilesException, OversizeException, AdjacentTilesException{            //Board's method is called
         b.placeAllShips(board);
