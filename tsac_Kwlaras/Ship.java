@@ -1,46 +1,123 @@
 import java.util.*;
-
 public  class Ship {
 
-  private int startCellx;
-  private int startCelly;
-  private char orient;
-  private  int size=3;
+    private char orient;
+    protected int size=3;
 
 
-  public Ship(){}
-//  Tile startCell;
-     
-  public void placeShip( char or, Board b, boolean verbose){
-  
-Tile  startCell = new Tile (2 , 2 , Tile.TileType.SEA);
-    this.startCellx = startCell.getX(); 
-    this.startCelly = startCell.getY();
+   public boolean placeShip(Tile t,char or, Board b, boolean verbose)throws OverlapTilesException,OversizeException,AdjacentTilesException{
 
-    verbose=false;
+        boolean check=true;
+        if(t.getX()+size>9 || t.getY()+size>9 || t.getX()>9 || t.getX()<0 || t.getY()>9 ||t.getY()<0  ) {
+            check=false;
+            if(verbose){
+                throw new OversizeException();}}
 
-   //Giving the orientation for ship's placement
-   
-    System.out.println("Please Give Orientation: ");
 
-    //Case that Orientation is Horizontal
-    if(or == 'h') {
-        for( int j=startCellx; j<(startCellx+size); j++){
-          
-			
-         b.board[startCelly][j].setTileType(Tile.TileType.SHIP);
+        if (or == 'h' && check) {
+            for (int j = t.getX(); j < (t.getX() + size); j++) {
 
-			
+                if (b.board[t.getY()][j].getSymbol() == 's' ) {
+                    check=false;
+                    if(verbose){
+                        throw new OverlapTilesException();}
+                        break;
+                }/*
+                   else if ( j==t.getX() && (b.getAdjacent(b.board[t.getY()][j],b)[0][0].getSymbol() == 's' || b.getAdjacent(b.board[t.getY()][j],b)[0][1].getSymbol() == 's' || b.getAdjacent(b.board[t.getY()][j],b)[1][0].getSymbol() == 's' || b.getAdjacent(b.board[t.getY()][j],b)[1][1].getSymbol() == 's')) {
+                        check = false;
+                        if (verbose) {
+                            throw new AdjacentTilesException();
+                        }
+                        break;
+                    }
+
+
+                   else if ( j>t.getX() && (b.getAdjacent(b.board[t.getY()][j],b)[0][1].getSymbol() == 's' || b.getAdjacent(b.board[t.getY()][j],b)[1][0].getSymbol() == 's' || b.getAdjacent(b.board[t.getY()][j],b)[1][1].getSymbol() == 's')) {
+                        check = false;
+                        if (verbose) {
+                            throw new AdjacentTilesException();
+                        }
+                        break;
+                    }*/
+                    b.getAdjacent(b.board[t.getY()][j],b);
+                    for (int k = 0; k < b.getAdjacent(b.board[t.getY()][j], b).size(); k++) {
+                        if (b.getAdjacent(b.board[t.getY()][j], b).get(k).getSymbol() == 's') {
+                            check = false;
+                            if (verbose) {
+                                throw new AdjacentTilesException();
+                            }
+                          break ;
+                        }
+                    }
+                    b.getAdjacent(b.board[t.getY()][j],b).clear();
+                    if(check) break;
+
+
+
+
+
+            }
+
+                    for (int j = t.getX(); j < (t.getX() + size); j++) {
+                if(check){
+                    b.board[t.getY()][j].setTileType(Tile.TileType.SHIP);
+                       }else break;
+                    }
+                    
+
+        }
+        //Case that Orientation is Vertical
+        else if (or == 'v' &&check ) {
+            for (int i = t.getY(); i < (t.getY() + size) &&check; i++) {
+
+                if (b.board[i][t.getX()].getSymbol() == 's') {
+                    check=false;
+                    if(verbose) {
+                        throw new OverlapTilesException();
+                    }
+                    break;
+                }
+/*
+                  else if ( i==t.getY() && (b.getAdjacent(b.board[i][t.getX()],b)[0][0].getSymbol() == 's' || b.getAdjacent(b.board[i][t.getX()],b)[0][1].getSymbol() == 's' || b.getAdjacent(b.board[i][t.getX()],b)[1][0].getSymbol() == 's' || b.getAdjacent(b.board[i][t.getX()],b)[1][1].getSymbol() == 's')) {
+                        check = false;
+                        if (verbose) {
+                            throw new AdjacentTilesException();
+                        }
+                    break;
+                    }
+
+                   else if ( i>t.getY()  &&  (b.getAdjacent(b.board[i][t.getX()],b)[0][0].getSymbol() == 's' || b.getAdjacent(b.board[i][t.getX()],b)[0][1].getSymbol() == 's' || b.getAdjacent(b.board[i][t.getX()],b)[1][0].getSymbol() == 's') ){
+                        check = false;
+                        if (verbose) {
+                            throw new AdjacentTilesException();
+                        }
+                    break;
+                    }*/
+                        b.getAdjacent(b.board[i][t.getX()], b);
+                        
+                    for (int k = 0; k < b.getAdjacent(b.board[i][t.getX()], b).size(); k++) {
+                        if (b.getAdjacent(b.board[i][t.getX()], b).get(k).getSymbol() == 's') {
+                            check = false;
+                            if (verbose) {
+                                throw new AdjacentTilesException();
+                            }
+                            break;
+                        }
+                    }
+                    b.getAdjacent(b.board[i][t.getX()],b).clear();
+
+
+                    if(check) break;
+            }
+
+             for (int i = t.getY(); i < (t.getY() + size); i++){
+                if(check){
+                    b.board[i][t.getX()].setTileType(Tile.TileType.SHIP);
+                }else break;
+             }
+
         }
 
+        return check;
     }
-    //Case that Orientation is Vertical
-     else if( or== 'v' ) {
-       for(int i=startCelly; i<(startCelly+size); i++){
-           
-         b.board[i][startCellx].setTileType(Tile.TileType.SHIP);
-       }
-     
-     }
-  }
 }
