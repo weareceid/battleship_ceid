@@ -1,4 +1,4 @@
-public boolean checkAdjacent(Board b){
+public boolean checkAdjacent(Board b) throws AdjacentTilesException{
         ArrayList<Tile> chad = new ArrayList<Tile>();
         chad=b.getAdjacent();
 
