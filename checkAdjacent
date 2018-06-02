@@ -1,0 +1,11 @@
+public boolean checkAdjacent(Board b){
+        ArrayList<Tile> chad = new ArrayList<Tile>();
+        chad=b.getAdjacent();
+
+        for (Tile k : chad){
+                if(chad.get(k).getSymbol != 's'){
+                        return true
+                } 
+                else{return false;}
+        }
+}
