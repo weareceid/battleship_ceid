@@ -20,7 +20,7 @@ public  class Ship {
         }
 
 //For horisontal placement
-
+if(FLAG == true){
         if(or == 'h'){
                 if(FLAG == true ){
 
@@ -32,7 +32,8 @@ public  class Ship {
                                         if(verbose == true ) {throw new OverlapTilesException();}
                                 
                                 }
-                                else {
+                        }
+                        if(FLAG == true) {
                                         ArrayList<Tile>  pin = new ArrayList<Tile>();
                                         pin =b.getAdjacent(b.board[y][x] , b);
                                         for(int m=0; m<pin.size(); m++){
@@ -48,9 +49,7 @@ public  class Ship {
                                 }
                         } 
                 } 
-        }
         
-  return FLAG;
 }
 
         //Case that Orientation is Vertical
@@ -64,8 +63,9 @@ public  class Ship {
                                         FLAG = false ;
                                         if(verbose == true ) {throw new OverlapTilesException();}
                                 
-                                }
-                                else {
+                 }               
+                        }
+                                if(FLAG == true) {
                                         ArrayList<Tile>  pin = new ArrayList<Tile>();
                                         pin =b.getAdjacent(b.board[y][x] , b);
                                         for(int l=0; l<pin.size(); l++){
@@ -80,11 +80,13 @@ public  class Ship {
 
                                 }
                         } 
-                } 
+                 
         }
 }
-  return FLAG;
    }
+
+  return FLAG;
+}
 }
         /*else if (or == 'v' && check ) {
             for (int i = y; i < (y + size) &&check; i++) {
