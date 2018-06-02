@@ -1,123 +1,101 @@
 import java.util.*;
 
-public  class Ship {
 
-    private char orient;
-    protected int size;
+public abstract class Ship {
 
+    protected int shipSize;
+    protected int[] cellStart = new int[2];
+    protected char direction;
 
-    public boolean checkOversize (Tile t, Board b, boolean verbose)throws OversizeException{
-        int x = t.getX();
-        int y = t.getY();
-        boolean oversize = true;
-
-        if(x < 0  || x >= 10 || y < 0 || y >= 10 || (x + size) >= 10 || (y+size) >= 10 ){
-            oversize = true;
-            if(verbose == true){	throw new OversizeException();}
-        }
-        return oversize;
+    public Ship(int shipSize, char direction, int[] cellStart) {
+        this.shipSize = shipSize;
+        this.direction = direction;
+        this.cellStart = cellStart;
     }
 
-    public boolean checkOverlap(Tile t,Board b,char or,boolean verbose)throws OverlapTilesException{
-        int x=t.getX();
-        int y=t.getY();
-        boolean FLAG=true;
+    public int getShipSize() {
+        return shipSize;
+    }
 
-        if(or=='h'){
-            int i=x;
-            while( i<(x+size)){
-                if(b.board[y][i].getSymbol() == 's'){
-                    FLAG=false;
-                    if(verbose){
+    public void setShipSize(int shipSize) {
+        this.shipSize = shipSize;
+    }
+
+    public int[] getCellStart() {
+        return cellStart;
+    }
+
+    public void setCellStart(int[] cellStart) {
+        this.cellStart = cellStart;
+    }
+
+    public char getDirection() {
+        return direction;
+    }
+
+    public void setDirection(char direction) {
+        this.direction = direction;
+    }
+
+    Boolean PlaceShip(Board board, Boolean msg) throws OverlapTilesException, OversizeException, AdjacentTilesException {
+        boolean success = true;
+        ArrayList<Tile> b = new ArrayList();
+        Tile[][] pin = new Tile[10][10];
+        pin = board.getPin();
+        int k = 0, l = 0;
+
+        if (direction == 'H' && cellStart[1] + shipSize > pin.length - 1) {
+            success = false;
+            if (msg) {
+                throw new OversizeException();
+            }
+        } else if (direction == 'V' && cellStart[0] + shipSize > pin.length - 1) {
+            success = false;
+            if (msg) {
+                throw new OversizeException();
+            }
+        } else {
+            int i = 0;
+            while (i < shipSize) {
+                if (pin[cellStart[0]][cellStart[1]].getType() != Tile.Type.SEA) {
+                    success = false;
+                    if (msg) {
                         throw new OverlapTilesException();
                     }
                     break;
+                } else if (direction == 'H') {
+                    l = i;
+                } else {
+                    k = i;
                 }
-                else i++; FLAG=true;
+
+                b = board.getAdjacentTiles(pin[cellStart[0] + k][cellStart[1] + l], pin);
+                for (int j = 0; j < b.size(); j++) {
+                    if (b.get(j).getType() != Tile.Type.SEA) {
+                        success = false;
+                        if (msg) {
+                            throw new AdjacentTilesException();
+                        }
+                        break;
+                    }
+
+                }
+                i++;
             }
         }
 
-        if(or=='v'){
-            int i=y;
-            while( i<(y+size)){
-                if(b.board[i][x].getSymbol() == 's'){
-                    FLAG=false;
-                    if(verbose){
-                        throw new OverlapTilesException();
-                    }
-                    break;
+        if (success) {
+            for (int i = 0; i <= shipSize - 1; i++) {
+                if (direction == 'H') {
+                    pin[cellStart[0]][cellStart[1] + i].setType(Tile.Type.SHIP);
+                } else {
+                    pin[cellStart[0] + i][cellStart[1]].setType(Tile.Type.SHIP);
                 }
-                else i++; FLAG=true;
+
             }
+            board.setPin(pin);
         }
-        return FLAG;
-    }
-    public boolean checkAdjacent(Tile t , Board b, boolean verbose) throws AdjacentTilesException{
-        ArrayList<Tile> chad = new ArrayList<Tile>();
-        chad=b.getAdjacent(t , b);
-        boolean adjacent = false;
+        return success;
 
-        for (Tile k : chad){
-            if(k.getSymbol() != 's'){
-                adjacent=true;
-            }
-            else{
-                adjacent=false;
-                break;
-            }
-                if(verbose == true){
-                    throw new AdjacentTilesException();
-
-                }
-        }
-        return adjacent;
-    }
-
-    public boolean placeShip(Tile t,char or, Board b, boolean verbose)throws OverlapTilesException,OversizeException,AdjacentTilesException{
-
-        int x = t.getX();
-        int y = t.getY();
-        boolean FLAG = true;
-						
-					FLAG = checkOversize(t , b , verbose);
-
-
-
-//For horisontal placement
-if(FLAG == true){ 
-        if(or == 'h'){
-
-                FLAG = checkOverlap(t , b , or , verbose); 
-
-                    }
-                    if(FLAG == true){
-                            FLAG = checkAdjacent(t , b , verbose);
-                            }
-    
-                if(FLAG==true){
-                    for(int i=x; i<(x+size); i++){
-                        b.board[y][i].setTileType(Tile.TileType.SHIP);
-                    }
-                }
-            }
-
-        //Case that Orientation is Vertical
-        else if(or == 'v'){
-                
-                FLAG = checkOverlap(t , b , or , verbose); 
-
-                    }
-                    if(FLAG == true) {
-                            FLAG = checkAdjacent(t , b, verbose);
-                            }
-                
-                if(FLAG==true){
-                    for (int j = y; j < (y + size); j++) {
-                        b.board[j][x].setTileType(Tile.TileType.SHIP);
-                    }
-                }
-            
-
-    return FLAG;
     }
 }

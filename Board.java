@@ -2,162 +2,152 @@ import java.util.*;
 
 public class Board {
 
-    Tile board[][] = new Tile[10][10];  // The board Tile type that the game is played
-    boolean hidden;  //usage for player identification
+    private Tile pin[][] = new Tile[10][10];
 
-    public Board() {//constructor for board
+    public Board() {
+
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                Tile v = new Tile(i, j, Tile.TileType.SEA);
-                board[i][j] = v;
+                pin[i][j] = new Tile(i, j, Tile.Type.SEA);
             }
         }
+
     }
 
-    public void drawboards() {
-
-        System.out.println("    - - Y O U - -   ");
-        System.out.println("  0 1 2 3 4 5 6 7 8 9");
-
-        for (int i = 0; i < 10; i++) {
-
-            for (int j = 0; j < 11; j++) {
-                if (j == 0) {
-                    System.out.print(i);
-                    System.out.print(" ");
-                } else {
-                    board[i][j - 1].draw(false);
-                    System.out.print(" ");
-                }
-            }
-            System.out.println();
-        }
-
-        System.out.println();
-        System.out.println(" - O P P O N E N T -");
-        System.out.println("  0 1 2 3 4 5 6 7 8 9");
-
-        for (int i = 0; i < 10; i++) {
-
-            for (int j = 0; j < 11; j++) {
-                if (j == 0) {
-                    System.out.print(i);
-                    System.out.print(" ");
-                } else {
-                    board[i][j - 1].draw(true);
-                    System.out.print(" ");
-                }
-            }
-            System.out.println();
-
-        }
-    }
-
-    public ArrayList<Tile> getAdjacent(Tile t,Board b) {  //give argument Tile and return array Tile
-       ArrayList<Tile> pin=new ArrayList<Tile>();
-       int x = t.getX();
-       int y = t.getY();
-       if(x-1>=0){
-        pin.add(b.board[y][x - 1]);}
-       //else pin.add(new Tile(0,0,Tile.TileType.SEA));
-        if(x+1<10){
-        pin.add(b.board[y][x + 1]);}
-      //  else pin.add(new Tile(0,0,Tile.TileType.SEA));
-        if(y+1<10){
-        pin.add(b.board[y + 1][x]);}
-      //  else pin.add(new Tile(0,0,Tile.TileType.SEA));
-        if(y-1>=0){
-        pin.add(b.board[y - 1][x]);}
-       // else pin.add(new Tile(0,0,Tile.TileType.SEA));
-
+    public Tile[][] getPin() {
         return pin;
     }
 
-    public void placeAllShips()throws OversizeException,OverlapTilesException,AdjacentTilesException {
-
-            int[] pin = new int[2];
-            char or = Game.getRandOrientation();
-            boolean FLAG = false;
-            Board b = new Board();
-
-            Battleship bs = new Battleship();
-            Cruiser cr = new Cruiser();
-            Destroyer ds = new Destroyer();
-            Submarine sb = new Submarine();
-            Carrier ca = new Carrier();
-
-            pin = Game.getRandInput();
-            Tile t1 = new Tile(pin[0],pin[1],Tile.TileType.SEA);
-
-            while(FLAG == false){
-            FLAG=bs.placeShip(t1 , or ,b , false);
-            if(FLAG == false){
-                    pin=Game.getRandInput();
-                    t1.setX(pin[0]);
-                    t1.setY(pin[1]);
-            }
-            else break;
-      }
-      
-      FLAG = false;
-            while(FLAG == false){
-            FLAG=cr.placeShip(t1 , or ,b , false);
-            if(FLAG == false){
-                    pin=Game.getRandInput();
-                    t1.setX(pin[0]);
-                    t1.setY(pin[1]);
-            }
-            else break;
-      }
-      FLAG = false;
-            while(FLAG == false){
-            FLAG=ds.placeShip(t1 , or ,b , false);
-            if(FLAG == false){
-                    pin=Game.getRandInput();
-                    t1.setX(pin[0]);
-                    t1.setY(pin[1]);
-            }
-            else break;
-      }
-      FLAG = false;
-            while(FLAG == false){
-            FLAG=sb.placeShip(t1 , or ,b , false);
-            if(FLAG == false){
-                    pin=Game.getRandInput();
-                    t1.setX(pin[0]);
-                    t1.setY(pin[1]);
-            }
-            else break;
-      }
-      FLAG = false;
-            while(FLAG == false){
-            FLAG=ca.placeShip(t1 , or ,b , false);
-            if(FLAG == false){
-                    pin=Game.getRandInput();
-                    t1.setX(pin[0]);
-                    t1.setY(pin[1]);
-            }
-            else break;
-      }
+    public void setPin(Tile[][] pin) {
+        this.pin = pin;
     }
 
-    public void setBoard(Tile[][] board) {
-        this.board = board;
-    }
+    static void drawboards(Tile pin1[][], Tile pin2[][]) {
 
+        System.out.println("\t" + " ------------- YOU --------------");
+        System.out.println("  0\t" + "1\t" + "2\t" + "3\t" + "4\t" + "5\t" + "6\t" + "7\t" + "8\t" + "9\t");
 
-    public boolean allShipsSunk() {
-        boolean check=false;
         for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 11; j++) {
-                if (board[i][j].getSymbol() == 's') {
-                     check=false;
-                }
-                else {
-                        check=true;
+
+            System.out.print(i + " ");
+
+            for (int j = 0; j < 10; j++) {
+                pin1[i][j].draw(false);
+                System.out.print("\t");
+            }
+
+            System.out.println();
+
+        }
+        System.out.println();
+
+        System.out.println("\t" + " ------------- COMPUTER --------------");
+        System.out.println("  0\t" + "1\t" + "2\t" + "3\t" + "4\t" + "5\t" + "6\t" + "7\t" + "8\t" + "9\t");
+
+        for (int i = 0; i < 10; i++) {
+
+            System.out.print(i + " ");
+
+            for (int j = 0; j < 10; j++) {
+                pin2[i][j].draw(true);
+                System.out.print("\t");
+            }
+
+            System.out.println();
+
+        }
+    }
+
+    void placeAllShips() throws OverlapTilesException, OversizeException, AdjacentTilesException {
+        Board b = this;
+        int cor[] = new int[2];
+
+        cor = Game.getRandInput();
+        Carrier Ca = new Carrier(5, Game.getRandOrientation(), cor);
+        Boolean check = false;
+
+        while (!check) {
+            check = Ca.PlaceShip(b, false);
+            cor = Game.getRandInput();
+            if (!check) {
+                Ca.setCellStart(cor);
+            }
+        }
+
+        check = false;
+        Battleship Ba = new Battleship(4, Game.getRandOrientation(), cor);
+        while (!check) {
+            check = Ba.PlaceShip(b, false);
+            cor = Game.getRandInput();
+            if (!check) {
+                Ba.setCellStart(cor);
+            }
+        }
+
+        check = false;
+        Cruiser Cr = new Cruiser(3, Game.getRandOrientation(), cor);
+        while (!check) {
+            check = Cr.PlaceShip(b, false);
+            cor = Game.getRandInput();
+            if (!check) {
+                Cr.setCellStart(cor);
+            }
+        }
+
+        check = false;
+        Destroyer De = new Destroyer(2, Game.getRandOrientation(), cor);
+        while (!check) {
+            check = De.PlaceShip(b, false);
+            cor = Game.getRandInput();
+            if (!check) {
+                De.setCellStart(cor);
+            }
+        }
+
+        check = false;
+        Submarine Su = new Submarine(3, Game.getRandOrientation(), cor);
+        while (!check) {
+            check = Su.PlaceShip(b, false);
+            cor = Game.getRandInput();
+            if (!check) {
+                Su.setCellStart(cor);
+            }
+        }
+    }
+
+    ArrayList<Tile> getAdjacentTiles(Tile t, Tile[][] pin) {
+        ArrayList<Tile> b = new ArrayList();
+
+        if (t.getY() + 1 < 10) {
+            b.add(pin[t.getX()][t.getY() + 1]);
+        }
+
+        if (t.getX() + 1 < 10) {
+            b.add(pin[t.getX() + 1][t.getY()]);
+        }
+
+        if (t.getY() - 1 >= 0) {
+            b.add(pin[t.getX()][t.getY() - 1]);
+        }
+
+        if (t.getX() - 1 >= 0) {
+            b.add(pin[t.getX() - 1][t.getY()]);
+        }
+
+        return b;
+
+    }
+
+    Boolean allShipsSunk() {
+        boolean b = true;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (pin[i][j].getType() == Tile.Type.SHIP) {
+                    b = false;
                 }
             }
         }
-         return check;
+        return b;
     }
+
 }
