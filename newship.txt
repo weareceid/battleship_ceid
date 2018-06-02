@@ -1,0 +1,128 @@
+import java.util.*;
+
+public  class Ship {
+
+    private char orient;
+    protected int size;
+    boolean FLAG;
+
+    public boolean checkOversize (Tile t, boolean verbose)throws OversizeException{
+        int x = t.getX();
+        int y = t.getY();
+        boolean oversize = true;
+
+        if(x <= 0  || x >= 9 || y <= 0 || y >= 9 || (x + size) >= 9 || (y+size) >= 9){
+            oversize = false;
+            if(verbose == true){	throw new OversizeException();}
+        }
+        return oversize;
+    }
+
+    public boolean checkOverlap(Tile t,Board b,char or,boolean verbose)throws OverlapTilesException{
+        int x=t.getX();
+        int y=t.getY();
+        boolean FLAG=true;
+
+        if(or=='h'){
+            int i=x;
+            while( i<(x+size)){
+                if(b.board[y][i].getSymbol() == 's'){
+                    FLAG=false;
+                    if(verbose){
+                        throw new OverlapTilesException();
+                    }
+                    break;
+                }
+                else i++; FLAG=true;
+            }
+        }
+
+        if(or=='v'){
+            int i=y;
+            while( i<(y+size)){
+                if(b.board[i][x].getSymbol() == 's'){
+                    FLAG=false;
+                    if(verbose){
+                        throw new OverlapTilesException();
+                    }
+                    break;
+                }
+                else i++; FLAG=true;
+            }
+        }
+        return FLAG;
+    }
+    public boolean checkAdjacent(Tile t , Board b, boolean verbose) throws AdjacentTilesException{
+        ArrayList<Tile> chad = new ArrayList<Tile>();
+        chad=b.getAdjacent(t , b);
+        boolean adjacent = false;
+
+        for (Tile k : chad){
+            if(k.getSymbol() != 's'){
+                adjacent=true;
+
+
+
+            }
+            else{
+                adjacent=false;
+                if(verbose == true){
+                    throw new AdjacentTilesException();
+
+                }
+                break;
+            }
+        }
+        return adjacent;
+    }
+
+    public boolean placeShip(Tile t,char or, Board b, boolean verbose)throws OverlapTilesException,OversizeException,AdjacentTilesException{
+
+        int x = t.getX();
+        int y = t.getY();
+        FLAG = true;
+
+      FLAG=checkOversize(t,verbose);
+       if(FLAG==true) {
+           FLAG=checkOverlap(t,b,or,verbose);
+       }
+//For horisontal placement
+
+        if(or == 'h' &&FLAG==true ){
+           int i=x;
+                while( i<(x+size)){
+FLAG=checkAdjacent(b.board[y][i],b,verbose);
+       if(FLAG){
+    i++;
+      }else break;
+                }
+            if(FLAG==true){
+                for ( i = x; i < (x + size); i++) {
+                    b.board[y][i].setTileType(Tile.TileType.SHIP);
+                }
+            }
+        }
+
+        //Case that Orientation is Vertical
+        else if(or == 'v'&& FLAG==true){
+        int j=y;
+                while( j<(y+size)) {
+                FLAG=checkAdjacent(b.board[j][x],b,verbose);
+                if(FLAG){
+                    j++;
+                }else break;
+                }
+
+
+                if(FLAG==true){
+                    for ( j = y; j < (y + size); j++) {
+                        b.board[j][x].setTileType(Tile.TileType.SHIP);
+                    }
+                }
+            }
+
+
+        return FLAG;
+    }
+}
+
