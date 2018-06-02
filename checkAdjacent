@@ -6,10 +6,14 @@ public boolean checkAdjacent(Board b){
                 if(chad.get(k).getSymbol != 's'){
                         return true;
                         
-                        if(verbose == true){
-                        throw new AdjacentTilesException();
-                        }
+                        
                 } 
-                else{return false;}
+                else{
+                return false;
+                if(verbose == true){
+                        throw new AdjacentTilesException();
+                        
+                        }
+                        }
         }
 }
