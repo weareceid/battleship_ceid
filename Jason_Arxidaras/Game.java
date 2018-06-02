@@ -69,7 +69,7 @@ public class Game {
 
 
         //Scanners
-        Scanner scname = new Scanner(System.in);
+        Scanner scanName = new Scanner(System.in);
 
         //Creating Ships
         Battleship battleship = new Battleship();
@@ -79,56 +79,68 @@ public class Game {
         Submarine submarine = new Submarine();
 
         //Creating Player
-        String name = scname.nextLine(); //Player gives his own name
+        System.out.println("Give your username!");
+        String name = scanName.nextLine(); //Player gives his own name
         Player user= new Player(name);
 
         //Creating Bot
         Player bot = new Player("bot");
 
-        bot.placeAllShips(bot.getPlayerBoard());
+        //bot.placeAllShips(bot.getPlayerBoard());
 
-        while(randomPlace()) {
+        /*while(randomPlace()) {
 
             user.placeAllShips(user.getPlayerBoard());
             user.getPlayerBoard().drawboards();
             break;
 
-        }
+        }*/
 
         int[] coordin = new int[2];
 
         //Placement of Battleship
+        System.out.println("Give coordinates for your Battleship.(First integer for y, second integer for x)");
         coordin = Game.getInput();
-        Tile tilePlaceBattleship = new Tile(coordin[0] , coordin[1] , Tile.TileType.SHIP);
+        Tile tilePlaceBattleship = new Tile(coordin[1] , coordin[0] , Tile.TileType.SHIP);
+        System.out.println("Give orientation ('h' for horizontal and 'v' for vertical: ");
         char orientBattleship =  Game.getOrientation();
         user.placeShip(battleship ,tilePlaceBattleship, orientBattleship , user.getPlayerBoard(),false);
 
         //Placement of Carrier
+        System.out.println("Give coordinates for your Carrier.(First integer for y, second integer for x)");
         coordin = Game.getInput();
-        Tile tilePlaceCarrier = new Tile(coordin[0] , coordin[1] , Tile.TileType.SHIP);
+        Tile tilePlaceCarrier = new Tile(coordin[1] , coordin[0] , Tile.TileType.SHIP);
+        System.out.println("Give orientation ('h' for horizontal and 'v' for vertical: ");
         char orientCarrier =  Game.getOrientation();
         user.placeShip(carrier ,tilePlaceCarrier, orientCarrier , user.getPlayerBoard(),false);
 
         //Placement of Cruiser
+        System.out.println("Give coordinates for your Cruiser.(First integer for y, second integer for x)");
         coordin = Game.getInput();
-        Tile tilePlaceCruiser = new Tile(coordin[0] , coordin[1] , Tile.TileType.SHIP);
+        Tile tilePlaceCruiser = new Tile(coordin[1] , coordin[0] , Tile.TileType.SHIP);
+        System.out.println("Give orientation ('h' for horizontal and 'v' for vertical: ");
         char orientCruiser =  Game.getOrientation();
         user.placeShip(cruiser ,tilePlaceCruiser, orientCruiser , user.getPlayerBoard(),false);
 
         //Placement of Destroyer
+        System.out.println("Give coordinates for your Destroyer.(First integer for y, second integer for x)");
         coordin = Game.getInput();
-        Tile tilePlaceDestroyer = new Tile(coordin[0] , coordin[1] , Tile.TileType.SHIP);
+        Tile tilePlaceDestroyer = new Tile(coordin[1] , coordin[0] , Tile.TileType.SHIP);
+        System.out.println("Give orientation ('h' for horizontal and 'v' for vertical: ");
         char orientDestroyer =  Game.getOrientation();
         user.placeShip(destroyer ,tilePlaceDestroyer, orientDestroyer , user.getPlayerBoard(),false);
 
         //Placement of Submarine
+        System.out.println("Give coordinates for your Submarine.(First integer for y, second integer for x)");
         coordin = Game.getInput();
-        Tile tilePlaceSubmarine = new Tile(coordin[0] , coordin[1] , Tile.TileType.SHIP);
+        Tile tilePlaceSubmarine = new Tile(coordin[1] , coordin[0] , Tile.TileType.SHIP);
+        System.out.println("Give orientation ('h' for horizontal and 'v' for vertical: ");
         char orientSubmarine =  Game.getOrientation();
         user.placeShip(submarine ,tilePlaceSubmarine, orientSubmarine , user.getPlayerBoard(),false);
 
 
         while(!user.getPlayerBoard().allShipsSunk() || !bot.getPlayerBoard().allShipsSunk()){    //If either of them loses the game is over
+            System.out.println("Give coordinates for firing: ");
             coordin = Game.getInput();
             user.fire(user.getPlayerBoard() , coordin);
 
