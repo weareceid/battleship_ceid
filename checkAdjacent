@@ -1,6 +1,6 @@
-public boolean checkAdjacent(Board b, boolean verbose) throws AdjacentTilesException{
+public boolean checkAdjacent(Tile t , Board b, boolean verbose) throws AdjacentTilesException{
         ArrayList<Tile> chad = new ArrayList<Tile>();
-        chad=b.getAdjacent();
+        chad=b.getAdjacent(t , b);
 
         for (Tile k : chad){
                 if(chad.get(k).getSymbol != 's'){
