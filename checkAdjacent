@@ -1,19 +1,22 @@
 public boolean checkAdjacent(Tile t , Board b, boolean verbose) throws AdjacentTilesException{
         ArrayList<Tile> chad = new ArrayList<Tile>();
         chad=b.getAdjacent(t , b);
+        boolean adjacent;
 
         for (Tile k : chad){
                 if(k.getSymbol != 's'){
-                        return true;
+                        adjacent=true;                
+
                         
                         
                 } 
                 else{
-                return false;
+                adjacent=false;
                 if(verbose == true){
                         throw new AdjacentTilesException();
                         
                         }
-                        }
+                  }
         }
+                        return adjacent;
 }
