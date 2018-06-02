@@ -3,7 +3,7 @@ public boolean checkOversize (Tile t, Board b, boolean verbose)throws OversizeEx
 	int y = t.getY();
 	boolean oversize = false;
 	
-	if(x<0  || x>9 || y<0 || y>9 || (x + size)>9 || (y+size)>9){
+	if(x <= 0  || x >= 9 || y <= 0 || y >= 9 || (x + size) >= 9 || (y+size) >= 9){
 	   oversize = true;
 	   if(verbose == true){	throw new OversizeException();}
 	  } 
