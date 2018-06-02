@@ -4,7 +4,11 @@ public boolean checkAdjacent(Board b){
 
         for (Tile k : chad){
                 if(chad.get(k).getSymbol != 's'){
-                        return true
+                        return true;
+                        
+                        if(verbose == true){
+                        throw new AdjacentTilesException();
+                        }
                 } 
                 else{return false;}
         }
