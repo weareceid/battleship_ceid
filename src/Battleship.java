@@ -1,7 +1,7 @@
 public class Battleship extends Ship {
-	String name = new String("battleship");
-	public Battleship(){
-		size=4;
-	
-	}
-	}
+
+    public Battleship(int size, char orentation, int[] startCell) {
+        super(size, orentation, startCell);
+    }
+
+}

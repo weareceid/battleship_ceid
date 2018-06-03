@@ -1,7 +1,7 @@
 public class Cruiser extends Ship {
-	String name = new String("cruiser");
-	public Cruiser(){
-		size=3;
-	
-	}
-	}
+
+    public Cruiser(int size, char orientation, int[] startCell) {
+        super(size, orientation, startCell);
+    }
+
+}

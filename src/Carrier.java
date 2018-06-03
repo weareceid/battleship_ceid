@@ -1,6 +1,7 @@
 public class Carrier extends Ship {
-	String name = new String("carrier");
-	public Carrier(){	
-		size=5;
-	}
-	}
+
+    public Carrier(int size, char orientation, int[] startCell) {
+        super(size, orientation, startCell);
+    }
+
+}

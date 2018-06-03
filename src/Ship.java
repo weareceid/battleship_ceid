@@ -1,91 +1,93 @@
 import java.util.*;
 
-public  class Ship {
 
-    private char orient;
+public abstract class Ship {
+
     protected int size;
+    protected int[] startCell = new int[2];
+    protected char orientation;
 
 
-    public boolean placeShip(Tile t,char or, Board b, boolean verbose)throws OverlapTilesException,OversizeException,AdjacentTilesException{
-ArrayList<Tile> ad=new ArrayList<>();
-        boolean check=true;
-        if(t.getX()+size>9 || t.getY()+size>9 || t.getX()>9 || t.getX()<0 || t.getY()>9 ||t.getY()<0  ) {
-            check=false;
-            if(verbose){
-                throw new OversizeException();}}
-int k=0,j=0,i=0;
+    //Constructor
+    public Ship(int size, char orientation, int[] startCell) {
+        this.size = size;
+        this.orientation = orientation;
+        this.startCell = startCell;
+    }
 
-        if (or == 'h' && check ) {
-            for (int j = t.getX(); j < (t.getX() + size)&& check; j++) {
-ad= b.getAdjacent(b.board[t.getY()][j], b);
-                if (b.board[t.getY()][j].getSymbol() == 's' ) {
-                    check=false;
-                    if(verbose){
-                        throw new OverlapTilesException();}
-                    break;
-                }
+    //Getters & Setters
+    public int getSize() { return size; }
 
+    public void setSize(int size) { this.size = size; }
 
-                for (int k = 0; k <ad.size(); k++) {
-                    if (ad.get(k).getSymbol() == 's') {
-                        check = false;
-                        if (verbose) {
-                            throw new AdjacentTilesException();
-                        }
-                        ad.clear();
-                        break ;
-                    }
-                }
+    public int[] getStartCell() { return startCell; }
 
+    public void setStartCell(int[] startCell) { this.startCell = startCell; }
 
+    public char getOrientation() { return orientation; }
+
+    public void setOrientation(char orientation) { this.orientation = orientation; }
+
+    public boolean PlaceShip(Board board, Boolean verbose) throws OverlapTilesException, OversizeException, AdjacentTilesException {
+        boolean FLAG = true;
+
+        ArrayList<Tile> b = new ArrayList<Tile>();
+        Tile arr[][] = new Tile[10][10];
+        arr = board.getBoard();
+        int m = 0, n = 0;
+
+        if (orientation == 'h' && startCell[1] + size > arr.length - 1) {
+            FLAG = false;
+            if (verbose) {
+                throw new OversizeException();
             }
-            ad.clear();
-            if(check){
-            for (int j = t.getX(); j < (t.getX() + size); j++) {
-
-                    b.board[t.getY()][j].setTileType(Tile.TileType.SHIP);
-                }
+        } else if (orientation == 'v' && startCell[0] + size > arr.length - 1) {
+            FLAG = false;
+            if (verbose) {
+                throw new OversizeException();
             }
-
-        }
-        //Case that Orientation is Vertical
-        else if (or == 'v' &&check ) {
-            for (int i = t.getY(); i < (t.getY() + size) &&check; i++) {
-ad=b.getAdjacent(b.board[i][t.getX()], b);
-                if (b.board[i][t.getX()].getSymbol() == 's') {
-                    check=false;
-                    if(verbose) {
+        } else {
+            int i = 0;
+            while (i < size) {
+                if (arr[startCell[0]][startCell[1]].getType() != Tile.Type.SEA) {
+                    FLAG = false;
+                    if (verbose) {
                         throw new OverlapTilesException();
                     }
-                      break;
+                    break;
+                } else if (orientation == 'h') {
+                    n = i;
+                } else {
+                    m = i;
                 }
 
-
-                for (int k = 0; k < ad.size(); k++) {
-                    if (b.getAdjacent(b.board[i][t.getX()], b).get(k).getSymbol() == 's') {
-                        check = false;
+                b = board.getAdjacentTiles(arr[startCell[0] + m][startCell[1] + n], arr);
+                for (int j = 0; j < b.size(); j++) {
+                    if (b.get(j).getType() != Tile.Type.SEA) {
+                        FLAG = false;
                         if (verbose) {
                             throw new AdjacentTilesException();
                         }
-                        ad.clear();
-                         break;
+                        break;
                     }
+
                 }
-
-
+                i++;
             }
-            ad.clear();
-            if(check){
-
-            for (int i = t.getY(); i < (t.getY() + size); i++){
-                    b.board[i][t.getX()].setTileType(Tile.TileType.SHIP);
-                }
-            }
-
         }
 
-ad.clear();
-        return check;
+        if (FLAG) {
+            for (int i = 0; i <= size - 1; i++) {
+                if (orientation == 'h') {
+                    arr[startCell[0]][startCell[1] + i].setType(Tile.Type.SHIP);
+                } else {
+                    arr[startCell[0] + i][startCell[1]].setType(Tile.Type.SHIP);
+                }
+
+            }
+            board.setBoard(arr);
+        }
+        return FLAG;
+
     }
 }
-

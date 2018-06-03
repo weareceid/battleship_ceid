@@ -1,7 +1,7 @@
 public class Destroyer extends Ship {
-	String name = new String("destroyer");
-	public Destroyer(){
-		size=2;
-	
-	}
-	}
+
+    public Destroyer(int size, char orientation, int[] startCell) {
+        super(size, orientation, startCell);
+    }
+
+}

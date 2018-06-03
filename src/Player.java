@@ -1,48 +1,97 @@
+import java.util.ArrayList;
+
 public class Player {
     //Variables
-
+String name;
     private int numOfShots;  //Counter of shots
     private int numOfMiss;   //Counter of missed shots
     private int numOfHit;    //Counter of successful hits
     private int numOfRep;    //Counter of repetitive shots
     private Board board = new Board();
-
-    public Player(){
+static boolean check;
+    public Player(String name){
+        this.name=name;
         this.numOfShots = 0;
         this.numOfMiss = 0;
         this.numOfHit = 0;
         this.numOfRep = 0;
     }
 
-   /* public void placeAllShips(Board b) throws OverlapTilesException, OversizeException, AdjacentTilesException{            //Board's method is called
-        b.placeAllShips(board);
-    }*/
+    public Board getPlayerBoard() { return board; }
 
-  /*  public void placeShip(Ship s, int Startx, int Starty) throws OverlapTilesException, OversizeException, AdjacentTilesException {       //Ship's method is called
-        Tile t = new Tile(Startx, Starty, Tile.TileType.SHIP);
-        s.placeShip(t, 'v',board,false);
-    }*/
+    public void placeAllShips() throws OverlapTilesException, OversizeException, AdjacentTilesException{            //Board's method is called 
+        getPlayerBoard().placeAllShips();
+    }
+
+   public boolean placeShip(Ship s) throws OverlapTilesException, OversizeException, AdjacentTilesException {       //Ship's method is called
+
+     return  s.PlaceShip(board,true);
+    }
 
 
     public void getStats(){
         System.out.println("Number of shots: " + numOfShots + "\tNumber of missed shots: " + numOfMiss +
                 "\tNumber of hits: " + numOfHit + "\tNumber of repetitive shots: " + numOfRep);
     }
-/*
-   public void fire(Tile t, Board b){
+static int k=0,j=0;
+    ArrayList<Tile> tiles=new ArrayList<Tile>();
+    Tile[][] fire(Tile board[][], int pin[]) {
         numOfShots++;
 
-            if(b.board[t.getY()][t.getX()].getSymbol() == 's'){                   //If the attacked tile is SHIP tile it changes its type to HIT and adds to the counter
-                b.board[t.getY()][t.getX()].setTileType(Tile.TileType.HIT);
-                System.out.println("Hit!");
-                numOfHit++;
-            }else if(b.board[t.getY()][t.getX()].getSymbol() == '~'){             //If the attacked tile is SEA tile it changes its type to MISS and adds to the counter
-                b.board[t.getY()][t.getX()].setTileType(Tile.TileType.MISS);
-                System.out.println("Miss!");
-                numOfMiss++;
-            }else if(b.board[t.getY()][t.getX()].getSymbol() == 'x' || b.board[t.getY()][t.getX()].getSymbol() == 'o'){     //If the attacked tile is HIT or MISS tile it adds to the counter
-                System.out.println("Already hit the spot!");
-                numOfRep++;
+        System.out.println(name + " ");
+
+        if("Computer".equals(name)&& check){
+            if(k < tiles.size()){
+                pin[0]=tiles.get(k).getX();
+                pin[1]=tiles.get(k).getY();}
+
+        }
+
+        if (board[pin[0]][pin[1]].getType() == Tile.Type.SHIP) {
+            numOfHit++;
+            board[pin[0]][pin[1]].setType(Tile.Type.HIT);
+            System.out.print("Hit");
+            if("Computer".equals(name)){
+                tiles =getPlayerBoard().getAdjacentTiles(board[pin[0]][pin[1]], board);
+                j++;
+                check = true;
             }
-    }*/
+        } else if (board[pin[0]][pin[1]].getType() == Tile.Type.SEA) {
+            numOfMiss++;
+            board[pin[0]][pin[1]].setType(Tile.Type.MISS);
+            System.out.print("Miss");
+            if("Computer".equals(name) ){
+                if(check)
+                    k++;
+                if(k>3||j>1){
+                    k=0;
+                    j=0;
+                    check=false;}
+
+            }
+        } else {
+            numOfRep++;
+
+            if (board[pin[0]][pin[1]].getType() == Tile.Type.MISS) {
+                System.out.print("Already Miss");
+            } else {
+                System.out.print("Already Hit");
+            }
+            if("Computer".equals(name) ){
+                if(check)
+                    k++;
+                if(k>3||j>1){
+                    k=0;
+                    j=0;
+                    check=false;}
+
+            }
+
+        }
+        System.out.println();
+
+
+        return board;
+
+    }
 }

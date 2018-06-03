@@ -1,7 +1,7 @@
 public class Submarine extends Ship {
-	String name = new String("submarine");
-	public Submarine(){
-		size=3;
-	
-	}
-	}
+
+    public Submarine(int size, char orientation, int[] startCell) {
+        super(size, orientation, startCell);
+    }
+
+}
