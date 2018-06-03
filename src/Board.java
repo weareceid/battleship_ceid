@@ -23,36 +23,54 @@ public class Board {
     //Method for drawing the Boards
 
     public static void drawboards(Tile board1[][], Tile board2[][]) {
-JFrame f1=new JFrame();
-        System.out.println("\t" + " ------------- YOU --------------");
-        System.out.println("  0 1 2 3 4 5 6 7 8 9");
-String[][] data =new String[11][11];
-String[] column={"","","","","","YOU","","","","",""};
-        for (int i = 0; i < 11; i++) {
-           if(i==0 && i<10)
-            for (int j = 0; j < 11; j++) {
 
-                data[i-1][j-1]=board1[i][j].getSymbol(false);
-                System.out.print(" ");
+JFrame f=new JFrame();
+String[][] data =new String[23][11];
+String[] column={"","","   ","   ","   ","YOU","   ","   ","   ","   ",""};
+        for (int i=1 ; i < 11; i++) {
+            data[i][0]=Integer.toString(i-1);
+        }
+        for (int i =1 ; i < 11; i++) {
+            data[0][i]=Integer.toString(i-1);
+        }
+
+
+        for (int i = 1; i < 11; i++) {
+            for (int j = 1; j < 11; j++) {
+
+                data[i][j]=board1[i-1][j-1].getSymbol(false);
+
             }
-              System.out.println();
+
+        }
+        for (int i =0 ; i < 11; i++) {
+            if(i==5){
+                data[11][i]="  BOT";
+            }
+           else data[12][i] ="   ";
+        }
+        for (int i =13 ; i < 23; i++) {
+            data[i][0]=Integer.toString(i-13);
+        }
+        for (int i =1 ; i < 11; i++) {
+            data[12][i]=Integer.toString(i-1);
+        }
+
+
+        for (int i =13 ; i < 23; i++) {
+            for (int j = 1; j < 11; j++) {
+
+                data[i][j]=board2[i-13][j-1].getSymbol(true);
+
+            }
+
         }
         JTable jt=new JTable(data,column);
-        jt.setBounds(30,40,200,300);
+        jt.setBounds(30,40,100,500);
         JScrollPane sp=new JScrollPane(jt);
-        f1.add(sp);
-        f1.setSize(300,400);
-        f1.setVisible(true);
-        System.out.println();
-        System.out.println("\t" + " ------------- COMPUTER --------------");
-        System.out.println("  0 1 2 3 4 5 6 7 8 9");
-
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                board2[i][j].getSymbol(true);
-                System.out.print(" ");
-            }
-        }
+        f.add(sp);
+        f.setSize(450,450);
+        f.setVisible(true);
 
     }
 
