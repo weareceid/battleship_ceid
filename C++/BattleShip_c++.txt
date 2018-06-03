@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include <vector>
 #include <array>
@@ -154,7 +154,7 @@ public:
 					m = i;
 				}
 			}
-			b = board.getAdjacentTiles(arr[startCell[0] + m][startCell[1] + n], arr); // Καποιος να φτιαξει getAdjacentTiles //
+			b = board.getAdjacentTiles(arr[startCell[0] + m][startCell[1] + n], arr); 
 			for (int j = 0; j < b.size(); j++) {
 				if (b.at(j).getType() != SEA) {
 					FLAG = false;
@@ -217,13 +217,76 @@ public:
 		}
 	}
 	//PlaceAllShips:
-	void placeAllShips() {}
+	void placeAllShips() {} //Φτιαξτε την
 
 	//GetAdjacentTiles:
-	vector<vector<Tile>> getAdjacentTiles(Tile t, )
+	vector<Tile> getAdjacentTiles(Tile t, vector<vector<Tile>>  brd) {
+		vector<Tile> b;
+		int x = t.getX;
+		int y = t.getY;
 
+		if (y + 1 < 10) { b.push_back(brd[x][y + 1]); }
+		if (x + 1 < 10) { b.push_back(brd[x + 1][y]); }
+		if (y - 1 >= 0) { b.push_back(brd[x][y - 1]); }
+		if (x - 1 >= 0) { b.push_back(brd[x - 1][y]); }
+	}
 
+	//AllShipsSunk:
+	bool allShipsSunk() {
+		bool FLAG = true;
 
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				if (board[i][j].getType() == SHIP) {
+					FLAG = false;
+				}
+			}
+		}
+		return FLAG;
+	}
+};
+
+// ====== P L A Y E R ====== P L A Y E R ====== P L A Y E R ====== P L A Y E R ====== P L A Y E R ====== P L A Y E R ====== P L A Y E R ====== P L A Y E R ====== //
+class Player{
+	//Variables and Methods of Player:
+	string name;
+	static bool check;
+	Board b;
+private:
+	int countShots;
+	int countHit;
+	int countMiss;
+	int countRep;
+	Board board;
+public:
+	//Constructor
+	Player(string name) {
+		this->name = name;
+		this->countShots = 0;
+		this->countHit = 0;
+		this->countMiss = 0;
+		this->countRep = 0;
+	}
+	//GetPlayerBoard
+	Board getPlayerBoard() { return this->board; }
+	//Η placeShip της κλασης Player ειναι περιττη στην C++, αφου ο χρηστης κανει μονο επιθεση.
+	//PlaceAllShips:
+	void placeAllShips() {		//Board's method is called
+		b.placeAllShips();
+	}
+	//GetStats:
+	void getStats() {
+		cout << "Number of Shots: " << countShots << "/tNumber of Hits: " << countHit << "/tNumber of Misses: " << countMiss
+			<< "/tNumber of Repetitive Shots: " << countRep << endl;
+	}
+
+	static int k, j;
+	vector<Tile> tiles;
+	//Fire:
+	vector<vector<Tile>> fire(vector<vector<Tile>> board, int pin[]) {
+		countShots++;
+
+	}
 
 };
 
