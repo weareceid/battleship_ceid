@@ -1,0 +1,236 @@
+﻿#include <iostream>
+#include <string>
+#include <vector>
+#include <array>
+#include <random>
+#include <iterator>
+#include <cstdlib>
+#include <exception>
+
+using namespace std;
+
+// ====== E X C E P T I O N S ====== E X C E P T I O N S ====== E X C E P T I O N S ====== E X C E P T I O N S ====== E X C E P T I O N S ====== E X C E P T I O N S ====== 
+class OversizeException : public exception {
+public:
+	virtual const char* oversize() const throw() {
+		return "Your ship doesn't fit.";
+	}
+};
+
+class OverlapException : public exception {
+public:
+	virtual const char* overlap() const throw() {
+		return "Your ship is over another ship.";
+	}
+};
+
+class AdjacentTileException : public exception {
+public:
+	virtual const char* adjacent() const throw() {
+		return "Your ship is too close to another ship.";
+	}
+};
+
+//===================================================================================================================================================================
+
+//TYPES
+const char SEA = '~';
+const char SHIP = 's';
+const char HIT = 'x';
+const char MISS = 'o';
+
+// ====== T I L E ====== T I L E ====== T I L E ====== T I L E ====== T I L E ====== T I L E ====== T I L E ====== T I L E ====== T I L E ====== T I L E ====== //
+class Tile {
+
+
+	//Variables and Methods of Tile:
+private:
+	int x, y;
+	char type;
+public:
+	Tile(){}
+
+	Tile(int y, int x, char type) {          //Tile Constructor
+		this->y = y;
+		this->x = x;
+		this->type = type;
+	}
+	//Getters
+	int getX() { return  this->x; }
+	int getY() { return this->y; }
+	char getType() { return this->type; }
+
+	//Setters
+	void setX(int x) { this->x = x; }
+	void setY(int y) { this->y = y; }
+	void setType(char type) { this->type = type; }
+
+	void draw(bool hidden) {
+		if (hidden && this->type == SHIP) { cout << '~'; }
+		else { cout << this->type; }
+	}
+};
+
+//====== S H I P ====== S H I P ====== S H I P ====== S H I P ====== S H I P ====== S H I P ====== S H I P ====== S H I P ====== S H I P ====== S H I P ======
+class Ship {
+	//Variables and Methods of Ship:
+protected:
+	int size;
+	int startCell[2];
+	char orientation;
+public:
+	Ship(int size, int startX, int startY, char orientation) {
+		this->size = size;
+		startCell[0] = startY; startCell[1] = startX;
+		this->orientation = orientation;
+	}
+
+	//Getters
+	int getSize() { return this->size; }
+	int getStartCell() { return this->startCell[2]; }
+	char getOrientation() { return this->orientation; }
+	//Setters
+	void setSize(int size) { this->size = size; }
+	void setStartCell(int startX, int startY) { startCell[0] = startY; startCell[1] = startX; }
+	void setOrientation(char orientation) { this->orientation = orientation; }
+
+	//PlaceShip
+	bool placeShip(Board board, bool verbose) {
+		bool FLAG = true;
+
+		vector<Tile> b;
+		vector< vector<Tile> > arr;
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				arr.push_back.push_back(board.getBoard());
+			}
+		}
+
+		int m = 0, n = 0;
+		//Για καθε exception βαζω διαφορετικο try-catch block:
+		//OversizeException:
+		try {
+			if (orientation == 'h' && startCell[1] + size > arr.size - 1) {
+				FLAG = false;
+			}
+			else if (orientation == 'v' && startCell[0] + size > arr.size - 1) {
+				FLAG = false;
+			}
+		}
+		catch (OversizeException &e) { 
+			if (FLAG = false && verbose == true) { return e.oversize(); }
+		}
+		//OverlapException:
+		try {
+			int i = 0;
+			while (i < size) {
+				if (arr[startCell[0]][startCell[1]].getType() != SEA) {
+					FLAG = false;
+					break;
+				}
+				else if (orientation == 'h') {
+					n = i;
+				}
+				else {
+					m = i;
+				}
+			}
+		}
+		catch (OverlapException &e) {
+			if (FLAG = false && verbose == true) { e.overlap(); }
+		}
+		//AdjacentTileException: (ξαναγραφω το try block του Overlap γιατι τα n και m χρειαζονται στο AdjacentTileException) 
+		try {
+			int i = 0;
+			while (i < size) {
+				if (arr[startCell[0]][startCell[1]].getType() != SEA) {
+					FLAG = false;
+					break;
+				}
+				else if (orientation == 'h') {
+					n = i;
+				}
+				else {
+					m = i;
+				}
+			}
+			b = board.getAdjacentTiles(arr[startCell[0] + m][startCell[1] + n], arr); // Καποιος να φτιαξει getAdjacentTiles //
+			for (int j = 0; j < b.size(); j++) {
+				if (b.at(j).getType() != SEA) {
+					FLAG = false;
+					break;
+				}	
+			}
+			i++;
+		}
+		catch (AdjacentTileException &e) {
+			if (FLAG == false && verbose == true) { e.adjacent(); }
+			}
+
+		if (FLAG) {
+			for (int i = 0; i <= size - 1; i++) {
+				if (orientation == 'h') {
+					arr[startCell[0]][startCell[1] + i].setType(SHIP);
+				}
+				else {
+					arr[startCell[0] + i][startCell[1]].setType(SHIP);
+				}
+			}
+			board.setBoard(arr);
+		}
+		return FLAG;
+	}
+};
+
+
+// ====== B O A R D ====== B O A R D ====== B O A R D ====== B O A R D ====== B O A R D ====== B O A R D ====== B O A R D ====== B O A R D ====== B O A R D ======
+class Board {
+	//Variables and Methods of Board
+private:
+	vector<vector<Tile>> board; //2D vector
+
+public:
+	Board() {        //Constructor ---> Το pdf λεει οτι ο board εχει μεγεθος 5 
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				Tile v = Tile(i, j, SEA);
+				v = board[i][j];
+			}
+		}
+	}
+	//Getter
+	vector<vector<Tile>> getBoard() { return this->board; }
+	//Setter
+	void setBoard(vector<vector<Tile>> p) { this->board = p; }
+
+	//drawboard: Τυπωνει μονο εναν πινακα, αυτον του αντιπαλου
+	void drawboard() {	// Μαλλον πρεπει να ειναι static, αλλα (οταν την βαζω static) για καποιο λογο οταν παω να καλεσω την draw πεταει error
+		cout << "/t------ C O M P U T E R ------" << endl;
+		cout << (" 0 1 2 3 4 5") << endl;
+
+		for (int i = 0; i < 5; i++) {
+			cout << i << " ";
+			for (int j = 0; j < 5; j++) {
+				board[i][j].draw(true);
+				cout << "\n";
+			}
+		}
+	}
+	//PlaceAllShips:
+	void placeAllShips() {}
+
+	//GetAdjacentTiles:
+	vector<vector<Tile>> getAdjacentTiles(Tile t, )
+
+
+
+
+};
+
+
+int main()
+{
+	cout << "Hello world!" << endl;
+	system("pause");
+	return 0;
+}
